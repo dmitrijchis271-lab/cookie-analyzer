@@ -1,0 +1,46 @@
+[
+  {
+    "domain": "example.com",
+    "name": "session_id",
+    "value": "abc123def456",
+    "expirationDate": 1735689600,
+    "secure": true,
+    "httpOnly": true,
+    "path": "/",
+    "sameSite": "Strict",
+    "session": false
+  },
+  {
+    "domain": "google.com",
+    "name": "NID",
+    "value": "xyz789",
+    "expirationDate": 1735689600,
+    "secure": true,
+    "httpOnly": false,
+    "path": "/",
+    "sameSite": "None",
+    "session": false
+  },
+  {
+    "domain": "github.com",
+    "name": "logged_in",
+    "value": "yes",
+    "expirationDate": 1640995200,
+    "secure": true,
+    "httpOnly": true,
+    "path": "/",
+    "sameSite": "Lax",
+    "session": false
+  },
+  {
+    "domain": "stackoverflow.com",
+    "name": "prov",
+    "value": "temp_value",
+    "expirationDate": 1609459200,
+    "secure": false,
+    "httpOnly": false,
+    "path": "/",
+    "sameSite": "Lax",
+    "session": false
+  }
+]
