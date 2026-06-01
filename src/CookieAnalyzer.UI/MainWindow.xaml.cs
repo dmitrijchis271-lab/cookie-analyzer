@@ -1,8 +1,8 @@
-namespace CookieAnalyzer.UI;
-
+using Avalonia;
 using Avalonia.Controls;
-using CookieAnalyzer.UI.Views;
-using CookieAnalyzer.UI.ViewModels;
+using Avalonia.Markup.Xaml;
+
+namespace CookieAnalyzer.UI;
 
 public partial class MainWindow : Window
 {

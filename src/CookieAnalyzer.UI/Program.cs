@@ -1,6 +1,6 @@
-using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using CookieAnalyzer.UI.ViewModels;
 
 namespace CookieAnalyzer.UI;
 

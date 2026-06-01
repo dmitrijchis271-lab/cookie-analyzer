@@ -1,5 +1,5 @@
 using Avalonia.Controls;
-using CookieAnalyzer.UI.ViewModels;
+using Avalonia.Markup.Xaml;
 
 namespace CookieAnalyzer.UI.Views;
 

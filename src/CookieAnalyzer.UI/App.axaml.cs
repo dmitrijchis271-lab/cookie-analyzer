@@ -1,10 +1,13 @@
+using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Markup.Xaml;
 using CookieAnalyzer.Core.Services;
 using CookieAnalyzer.UI.ViewModels;
 using Serilog;
 
 namespace CookieAnalyzer.UI;
 
-public class App : Avalonia.Application
+public partial class App : Application
 {
     public override void Initialize()
     {
