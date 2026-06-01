@@ -1,16 +1,24 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net8.0-windows</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<LangVersion>latest</LangVersion>
+		<AssemblyName>CookieAnalyzer.UI</AssemblyName>
+		<RootNamespace>CookieAnalyzer.UI</RootNamespace>
+		<Version>1.0.0</Version>
+		<Authors>dmitrijchis271-lab</Authors>
+		<Description>Cookie Analyzer - Analyze, validate and export exported cookies</Description>
+		<UseWindowsForms>false</UseWindowsForms>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Avalonia" Version="11.0.10" />
 		<PackageReference Include="Avalonia.Diagnostics" Version="11.0.10" />
 		<PackageReference Include="Avalonia.ReactiveUI" Version="11.0.10" />
+		<PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.10" />
+		<PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.10" />
 		<PackageReference Include="ReactiveUI" Version="19.5.41" />
 		<PackageReference Include="ReactiveUI.Fody" Version="19.5.41" />
 		<PackageReference Include="Serilog" Version="3.1.1" />

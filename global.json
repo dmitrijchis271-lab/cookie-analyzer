@@ -1,0 +1,11 @@
+# Настройки для быстрого старта
+[buildSettings]
+cloudPath = 
+cloudProvider = 
+verbosity = minimal
+moduleDir = 
+
+[globalPackages]
+managePackages = true
+
+[sdkPath]
