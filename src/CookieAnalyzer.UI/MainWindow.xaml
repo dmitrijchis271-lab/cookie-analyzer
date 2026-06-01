@@ -2,7 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="CookieAnalyzer.UI.MainWindow"
         Title="Анализатор Cookie"
-        Width="1200" Height="800"
+        Width="1400" Height="900"
         WindowStartupLocation="CenterScreen">
     
     <Grid RowDefinitions="Auto,*,Auto" Background="#F5F5F5">
@@ -10,109 +10,170 @@
         <Border GridRow="0" Background="#2196F3" Padding="20" BorderThickness="0,0,0,1" BorderBrush="#1976D2">
             <StackPanel Orientation="Vertical" Spacing="10">
                 <TextBlock Text="Анализатор Cookie" FontSize="24" FontWeight="Bold" Foreground="White" />
-                <TextBlock Text="Анализирует экспортированные cookie-файлы в формате JSON" FontSize="12" Foreground="#E3F2FD" />
+                <TextBlock Text="Анализирует, валидирует и сохраняет экспортированные cookie-файлы в формате JSON" FontSize="12" Foreground="#E3F2FD" />
             </StackPanel>
         </Border>
 
         <!-- Main Content -->
-        <Grid GridRow="1" ColumnDefinitions="300,*" Spacing="10" Padding="20">
+        <Grid GridRow="1" ColumnDefinitions="320,*" Spacing="10" Padding="20">
             <!-- Left Panel -->
             <Border GridColumn="0" Background="White" Padding="15" CornerRadius="4">
-                <StackPanel Orientation="Vertical" Spacing="15">
-                    <TextBlock Text="Управление" FontSize="14" FontWeight="Bold" Foreground="#333" />
+                <ScrollViewer>
+                    <StackPanel Orientation="Vertical" Spacing="15">
+                        <TextBlock Text="Управление" FontSize="14" FontWeight="Bold" Foreground="#333" />
 
-                    <!-- Directory Selection -->
-                    <StackPanel Orientation="Vertical" Spacing="8">
-                        <TextBlock Text="Папка с cookie:" FontSize="11" FontWeight="SemiBold" Foreground="#666" />
-                        <TextBlock Text="{Binding SelectedDirectory}" FontSize="10" TextWrapping="Wrap" Foreground="#999" MaxHeight="50" />
-                        <Button Command="{Binding BrowseCommand}" 
-                                Content="📁 Выбрать папку"
-                                Background="#4CAF50" 
+                        <!-- Directory Selection -->
+                        <StackPanel Orientation="Vertical" Spacing="8">
+                            <TextBlock Text="Папка с cookie:" FontSize="11" FontWeight="SemiBold" Foreground="#666" />
+                            <TextBlock Text="{Binding SelectedDirectory}" FontSize="10" TextWrapping="Wrap" Foreground="#999" MaxHeight="50" />
+                            <Button Command="{Binding BrowseCommand}" 
+                                    Content="🗂 Выбрать папку"
+                                    Background="#4CAF50" 
+                                    Foreground="White"
+                                    Padding="8,8"
+                                    CornerRadius="2" />
+                        </StackPanel>
+
+                        <Separator />
+
+                        <!-- Scan Button -->
+                        <Button Command="{Binding ScanCommand}" 
+                                Content="🔍 Сканировать"
+                                Background="#2196F3" 
                                 Foreground="White"
-                                Padding="8,8"
+                                Padding="8,10"
+                                FontSize="12"
+                                FontWeight="SemiBold"
                                 CornerRadius="2" />
+
+                        <!-- Validation Section -->
+                        <Separator />
+                        <TextBlock Text="Валидация Cookie" FontSize="12" FontWeight="Bold" Foreground="#333" />
+                        
+                        <CheckBox IsChecked="{Binding EnableValidation}" Content="Проверять валидность на сайтах" />
+
+                        <StackPanel Orientation="Vertical" Spacing="8">
+                            <TextBlock Text="Папка для результатов:" FontSize="11" FontWeight="SemiBold" Foreground="#666" />
+                            <TextBlock Text="{Binding ValidOutputDirectory}" FontSize="10" TextWrapping="Wrap" Foreground="#999" MaxHeight="40" />
+                            <Button Command="{Binding BrowseValidOutputCommand}" 
+                                    Content="📁 Выбрать папку"
+                                    Background="#FF9800" 
+                                    Foreground="White"
+                                    Padding="8,8"
+                                    CornerRadius="2"
+                                    FontSize="11" />
+                        </StackPanel>
+
+                        <Button Command="{Binding ValidateCommand}" 
+                                Content="✓ Проверить валидность"
+                                Background="#9C27B0" 
+                                Foreground="White"
+                                Padding="8,10"
+                                FontSize="12"
+                                FontWeight="SemiBold"
+                                CornerRadius="2" />
+
+                        <!-- Export Button -->
+                        <Button Command="{Binding ExportCommand}" 
+                                Content="💾 Экспортировать отчет"
+                                Background="#F44336" 
+                                Foreground="White"
+                                Padding="8,10"
+                                FontSize="12"
+                                FontWeight="SemiBold"
+                                CornerRadius="2" />
+
+                        <Separator />
+
+                        <!-- Filters -->
+                        <TextBlock Text="Фильтры" FontSize="12" FontWeight="Bold" Foreground="#333" />
+                        <CheckBox IsChecked="{Binding ShowExpiredOnly}" Content="Только истекшие" />
+                        <CheckBox IsChecked="{Binding ShowSecureOnly}" Content="Только Secure" />
+
+                        <Separator />
+
+                        <!-- Statistics -->
+                        <TextBlock Text="Статистика" FontSize="12" FontWeight="Bold" Foreground="#333" />
+                        <StackPanel Orientation="Vertical" Spacing="6">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <TextBlock Text="Всего cookie:" />
+                                <TextBlock GridColumn="1" Text="{Binding TotalCookies}" Foreground="#2196F3" FontWeight="Bold" />
+                            </Grid>
+                            <Grid ColumnDefinitions="*,Auto">
+                                <TextBlock Text="Истекших:" />
+                                <TextBlock GridColumn="1" Text="{Binding ExpiredCookies}" Foreground="#F44336" FontWeight="Bold" />
+                            </Grid>
+                            <Grid ColumnDefinitions="*,Auto">
+                                <TextBlock Text="Secure:" />
+                                <TextBlock GridColumn="1" Text="{Binding SecureCookies}" Foreground="#4CAF50" FontWeight="Bold" />
+                            </Grid>
+                            <Grid ColumnDefinitions="*,Auto">
+                                <TextBlock Text="HttpOnly:" />
+                                <TextBlock GridColumn="1" Text="{Binding HttpOnlyCookies}" Foreground="#9C27B0" FontWeight="Bold" />
+                            </Grid>
+                            <Separator />
+                            <Grid ColumnDefinitions="*,Auto">
+                                <TextBlock Text="Валидных:" />
+                                <TextBlock GridColumn="1" Text="{Binding ValidCookies}" Foreground="#2E7D32" FontWeight="Bold" />
+                            </Grid>
+                            <Grid ColumnDefinitions="*,Auto">
+                                <TextBlock Text="Невалидных:" />
+                                <TextBlock GridColumn="1" Text="{Binding InvalidCookies}" Foreground="#C62828" FontWeight="Bold" />
+                            </Grid>
+                        </StackPanel>
                     </StackPanel>
-
-                    <Separator />
-
-                    <!-- Scan Button -->
-                    <Button Command="{Binding ScanCommand}" 
-                            Content="🔍 Сканировать"
-                            Background="#2196F3" 
-                            Foreground="White"
-                            Padding="8,10"
-                            FontSize="12"
-                            FontWeight="SemiBold"
-                            CornerRadius="2" />
-
-                    <!-- Export Button -->
-                    <Button Command="{Binding ExportCommand}" 
-                            Content="💾 Экспортировать отчет"
-                            Background="#FF9800" 
-                            Foreground="White"
-                            Padding="8,10"
-                            FontSize="12"
-                            FontWeight="SemiBold"
-                            CornerRadius="2" />
-
-                    <Separator />
-
-                    <!-- Filters -->
-                    <TextBlock Text="Фильтры" FontSize="12" FontWeight="Bold" Foreground="#333" />
-                    <CheckBox IsChecked="{Binding ShowExpiredOnly}" Content="Только истекшие" />
-                    <CheckBox IsChecked="{Binding ShowSecureOnly}" Content="Только Secure" />
-
-                    <Separator />
-
-                    <!-- Statistics -->
-                    <TextBlock Text="Статистика" FontSize="12" FontWeight="Bold" Foreground="#333" />
-                    <StackPanel Orientation="Vertical" Spacing="6">
-                        <Grid ColumnDefinitions="*,Auto">
-                            <TextBlock Text="Всего cookie:" />
-                            <TextBlock GridColumn="1" Text="{Binding TotalCookies}" Foreground="#2196F3" FontWeight="Bold" />
-                        </Grid>
-                        <Grid ColumnDefinitions="*,Auto">
-                            <TextBlock Text="Истекших:" />
-                            <TextBlock GridColumn="1" Text="{Binding ExpiredCookies}" Foreground="#F44336" FontWeight="Bold" />
-                        </Grid>
-                        <Grid ColumnDefinitions="*,Auto">
-                            <TextBlock Text="Secure:" />
-                            <TextBlock GridColumn="1" Text="{Binding SecureCookies}" Foreground="#4CAF50" FontWeight="Bold" />
-                        </Grid>
-                        <Grid ColumnDefinitions="*,Auto">
-                            <TextBlock Text="HttpOnly:" />
-                            <TextBlock GridColumn="1" Text="{Binding HttpOnlyCookies}" Foreground="#9C27B0" FontWeight="Bold" />
-                        </Grid>
-                    </StackPanel>
-                </StackPanel>
+                </ScrollViewer>
             </Border>
 
             <!-- Right Panel - Cookie List -->
-            <StackPanel GridColumn="1" Orientation="Vertical" Spacing="10">
+            <Grid GridColumn="1" RowDefinitions="Auto,*" Spacing="10">
                 <!-- Status and Progress -->
-                <Border Background="White" Padding="15" CornerRadius="4">
+                <Border GridRow="0" Background="White" Padding="15" CornerRadius="4">
                     <StackPanel Orientation="Vertical" Spacing="8">
-                        <TextBlock Text="{Binding StatusMessage}" FontSize="11" Foreground="#666" />
-                        <ProgressBar Value="{Binding Progress}" IsVisible="{Binding IsScanning}" Height="6" CornerRadius="3" />
-                        <TextBlock Text="{Binding ProgressText}" FontSize="10" Foreground="#999" IsVisible="{Binding IsScanning}" />
+                        <TextBlock Text="{Binding StatusMessage}" FontSize="11" Foreground="#666" FontWeight="SemiBold" />
+                        <ProgressBar Value="{Binding Progress}" IsVisible="{Binding IsScanning, Converter={StaticResource BoolConverter}}" Height="6" CornerRadius="3" Maximum="100" />
+                        <ProgressBar Value="{Binding Progress}" IsVisible="{Binding IsValidating, Converter={StaticResource BoolConverter}}" Height="6" CornerRadius="3" Maximum="100" Background="#9C27B0" />
+                        <TextBlock Text="{Binding ProgressText}" FontSize="10" Foreground="#999" IsVisible="{Binding IsScanning, Converter={StaticResource BoolConverter}}" />
+                        <TextBlock Text="{Binding ProgressText}" FontSize="10" Foreground="#999" IsVisible="{Binding IsValidating, Converter={StaticResource BoolConverter}}" />
                     </StackPanel>
                 </Border>
 
-                <!-- Cookie Data Grid -->
-                <DataGrid ItemsSource="{Binding DisplayedCookies}" 
-                          Background="White"
-                          CornerRadius="4"
-                          CanUserResizeColumns="True"
-                          CanUserSortColumns="True">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Домен" Binding="{Binding Domain}" Width="*" MinWidth="150" />
-                        <DataGridTextColumn Header="Имя" Binding="{Binding Name}" Width="*" MinWidth="120" />
-                        <DataGridTextColumn Header="Срок действия" Binding="{Binding ExpirationDateTime, StringFormat={0:yyyy-MM-dd HH:mm}}" Width="*" MinWidth="150" />
-                        <DataGridCheckBoxColumn Header="Secure" Binding="{Binding Secure}" Width="70" />
-                        <DataGridCheckBoxColumn Header="HttpOnly" Binding="{Binding HttpOnly}" Width="70" />
-                    </DataGrid.Columns>
-                </DataGrid>
-            </StackPanel>
+                <!-- Tabs for Cookie/Validation Results -->
+                <TabControl GridRow="1" Background="White" CornerRadius="4">
+                    <TabItem Header="📋 Найденные Cookie" Background="White" Foreground="#333">
+                        <DataGrid ItemsSource="{Binding DisplayedCookies}" 
+                                  Background="White"
+                                  CanUserResizeColumns="True"
+                                  CanUserSortColumns="True"
+                                  BorderThickness="0">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Домен" Binding="{Binding Domain}" Width="*" MinWidth="150" />
+                                <DataGridTextColumn Header="Имя" Binding="{Binding Name}" Width="*" MinWidth="120" />
+                                <DataGridTextColumn Header="Срок действия" Binding="{Binding ExpirationDateTime, StringFormat={0:yyyy-MM-dd HH:mm}}" Width="*" MinWidth="150" />
+                                <DataGridCheckBoxColumn Header="Secure" Binding="{Binding Secure}" Width="70" />
+                                <DataGridCheckBoxColumn Header="HttpOnly" Binding="{Binding HttpOnly}" Width="70" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </TabItem>
+
+                    <TabItem Header="✓ Результаты валидации" Background="White" Foreground="#333">
+                        <DataGrid ItemsSource="{Binding ValidationResults}" 
+                                  Background="White"
+                                  CanUserResizeColumns="True"
+                                  CanUserSortColumns="True"
+                                  BorderThickness="0">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Домен" Binding="{Binding Domain}" Width="*" MinWidth="150" />
+                                <DataGridTextColumn Header="Cookie" Binding="{Binding Cookie.Name}" Width="*" MinWidth="120" />
+                                <DataGridTextColumn Header="Статус" Binding="{Binding StatusCode}" Width="150" />
+                                <DataGridCheckBoxColumn Header="Валидна" Binding="{Binding IsValid}" Width="80" />
+                                <DataGridCheckBoxColumn Header="Сайт доступен" Binding="{Binding SiteAccessible}" Width="100" />
+                                <DataGridTextColumn Header="Время (ms)" Binding="{Binding ResponseTimeMs}" Width="100" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </TabItem>
+                </TabControl>
+            </Grid>
         </Grid>
 
         <!-- Footer -->
@@ -123,4 +184,8 @@
             </StackPanel>
         </Border>
     </Grid>
+
+    <Window.Resources>
+        <local:BoolToVisibilityConverter x:Key="BoolConverter" />
+    </Window.Resources>
 </Window>

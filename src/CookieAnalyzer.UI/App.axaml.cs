@@ -31,8 +31,14 @@ public class App : Avalonia.Application
             var cookieReaderService = new CookieReaderService();
             var directoryScannerService = new DirectoryScannerService(cookieReaderService);
             var exportService = new ExportService();
+            var validationService = new CookieValidationService();
+            var storageService = new ValidationResultStorageService();
             
-            var mainViewModel = new MainWindowViewModel(directoryScannerService, exportService);
+            var mainViewModel = new MainWindowViewModel(
+                directoryScannerService, 
+                exportService,
+                validationService,
+                storageService);
             desktop.MainWindow = new MainWindow { DataContext = mainViewModel };
         }
 
