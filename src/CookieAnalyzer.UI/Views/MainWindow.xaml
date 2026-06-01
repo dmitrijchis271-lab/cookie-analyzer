@@ -1,0 +1,141 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="CookieAnalyzer.UI.Views.MainWindow"
+        Title="Анализатор Cookie" Width="1200" Height="800"
+        WindowStartupLocation="CenterScreen"
+        Background="#F5F5F5">
+    <Grid RowDefinitions="Auto,*,Auto">
+        <!-- Header -->
+        <Border GridRow="0" Background="#2196F3" Padding="20" BorderThickness="0,0,0,1" BorderBrush="#1976D2">
+            <StackPanel Orientation="Vertical" Spacing="10">
+                <TextBlock Text="Анализатор Cookie" FontSize="24" FontWeight="Bold" Foreground="White" />
+                <TextBlock Text="Анализирует экспортированные cookie-файлы в формате JSON" FontSize="12" Foreground="#E3F2FD" />
+            </StackPanel>
+        </Border>
+
+        <!-- Main Content -->
+        <Grid GridRow="1" ColumnDefinitions="300,*" Spacing="10" Padding="20">
+            <!-- Left Panel -->
+            <StackPanel Orientation="Vertical" Spacing="15" Background="White" Padding="15" CornerRadius="4" Effect="drop-shadow(0 2 4 #00000015)">
+                <TextBlock Text="Управление" FontSize="14" FontWeight="Bold" Foreground="#333" />
+
+                <!-- Directory Selection -->
+                <StackPanel Orientation="Vertical" Spacing="8">
+                    <TextBlock Text="Папка с cookie:" FontSize="11" FontWeight="SemiBold" Foreground="#666" />
+                    <TextBlock Text="{Binding SelectedDirectory}" FontSize="10" TextWrapping="Wrap" Foreground="#999" />
+                    <Button Command="{Binding BrowseCommand}" 
+                            Content="📁 Выбрать папку"
+                            Background="#4CAF50" 
+                            Foreground="White"
+                            Padding="8,8"
+                            CornerRadius="2" />
+                </StackPanel>
+
+                <Separator />
+
+                <!-- Scan Button -->
+                <Button Command="{Binding ScanCommand}" 
+                        Content="🔍 Сканировать"
+                        Background="#2196F3" 
+                        Foreground="White"
+                        Padding="8,10"
+                        FontSize="12"
+                        FontWeight="SemiBold"
+                        CornerRadius="2"
+                        IsEnabled="{Binding !IsScanning}" />
+
+                <!-- Export Button -->
+                <Button Command="{Binding ExportCommand}" 
+                        Content="💾 Экспортировать отчет"
+                        Background="#FF9800" 
+                        Foreground="White"
+                        Padding="8,10"
+                        FontSize="12"
+                        FontWeight="SemiBold"
+                        CornerRadius="2" />
+
+                <Separator />
+
+                <!-- Filters -->
+                <TextBlock Text="Фильтры" FontSize="12" FontWeight="Bold" Foreground="#333" />
+                
+                <CheckBox IsChecked="{Binding ShowExpiredOnly}" Content="Только истекшие" />
+                <CheckBox IsChecked="{Binding ShowSecureOnly}" Content="Только Secure" />
+
+                <Separator />
+
+                <!-- Statistics -->
+                <TextBlock Text="Статистика" FontSize="12" FontWeight="Bold" Foreground="#333" />
+                <StackPanel Orientation="Vertical" Spacing="6">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock Text="Всего cookie:" />
+                        <TextBlock Text="{Binding TotalCookies}" Foreground="#2196F3" FontWeight="Bold" />
+                    </Grid>
+                    <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock Text="Истекших:" />
+                        <TextBlock Text="{Binding ExpiredCookies}" Foreground="#F44336" FontWeight="Bold" />
+                    </Grid>
+                    <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock Text="Secure:" />
+                        <TextBlock Text="{Binding SecureCookies}" Foreground="#4CAF50" FontWeight="Bold" />
+                    </Grid>
+                    <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock Text="HttpOnly:" />
+                        <TextBlock Text="{Binding HttpOnlyCookies}" Foreground="#9C27B0" FontWeight="Bold" />
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
+
+            <!-- Right Panel - Cookie List -->
+            <StackPanel GridColumn="1" Orientation="Vertical" Spacing="10">
+                <!-- Status and Progress -->
+                <StackPanel Orientation="Vertical" Spacing="8" Background="White" Padding="15" CornerRadius="4" Effect="drop-shadow(0 2 4 #00000015)">
+                    <TextBlock Text="{Binding StatusMessage}" FontSize="11" Foreground="#666" />
+                    <ProgressBar Value="{Binding Progress}" IsVisible="{Binding IsScanning}" Height="6" CornerRadius="3" />
+                    <TextBlock Text="{Binding ProgressText}" FontSize="10" Foreground="#999" IsVisible="{Binding IsScanning}" />
+                </StackPanel>
+
+                <!-- Cookie Data Grid -->
+                <DataGrid ItemsSource="{Binding DisplayedCookies}" 
+                          Background="White"
+                          CornerRadius="4"
+                          Effect="drop-shadow(0 2 4 #00000015)"
+                          CanUserResizeColumns="True"
+                          CanUserSortColumns="True">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Домен" Binding="{Binding Domain}" Width="*" MinWidth="150" />
+                        <DataGridTextColumn Header="Имя" Binding="{Binding Name}" Width="*" MinWidth="120" />
+                        <DataGridTextColumn Header="Срок действия" Binding="{Binding ExpirationDateTime, StringFormat={0:yyyy-MM-dd HH:mm}}" Width="*" MinWidth="150" />
+                        <DataGridCheckBoxColumn Header="Secure" Binding="{Binding Secure}" Width="70" />
+                        <DataGridCheckBoxColumn Header="HttpOnly" Binding="{Binding HttpOnly}" Width="70" />
+                        <DataGridTextColumn Header="Статус" Binding="{Binding IsExpired, StringFormat={0}}" Width="100">
+                            <DataGridTextColumn.CellStyleClasses>
+                                <string>expired-cell</string>
+                            </DataGridTextColumn.CellStyleClasses>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+        </Grid>
+
+        <!-- Footer -->
+        <Border GridRow="2" Background="#FAFAFA" Padding="20" BorderThickness="0,1,0,0" BorderBrush="#E0E0E0">
+            <StackPanel Orientation="Horizontal" Spacing="20">
+                <TextBlock Text="Анализатор Cookie v1.0" FontSize="10" Foreground="#999" />
+                <TextBlock Text=".NET 8 | Avalonia UI | ReactiveUI" FontSize="10" Foreground="#999" />
+            </StackPanel>
+        </Border>
+    </Grid>
+
+    <Window.Styles>
+        <Style Selector="Button">
+            <Setter Property="Cursor" Value="Hand" />
+        </Style>
+        <Style Selector="Button:disabled">
+            <Setter Property="Opacity" Value="0.6" />
+        </Style>
+        <Style Selector="TextBlock.expired-cell">
+            <Setter Property="Foreground" Value="#F44336" />
+        </Style>
+    </Window.Styles>
+</Window>
